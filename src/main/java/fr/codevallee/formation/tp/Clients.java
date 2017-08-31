@@ -27,15 +27,20 @@ public class Clients {
 		@OneToMany
 		private Set<Adresse> adresse;
 
+	public Set<Adresse> getAdresse() {
+			return adresse;
+		}
+
+		public void setAdresse(Set<Adresse> adresse) {
+			this.adresse = adresse;
+		}
+
 	// Un client peut avoir plusieurs factures
 	@OneToMany
+	
 	private Set<Factures> factures;
 
-	// Un client peut avoir plusieurs articles
-	@OneToMany
-	private Set<Articles> articles;
-
-	public String getNom() {
+		public String getNom() {
 		return nom;
 	}
 

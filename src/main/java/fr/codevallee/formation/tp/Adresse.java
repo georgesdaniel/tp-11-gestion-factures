@@ -20,6 +20,19 @@ public class Adresse {
 	@Column(length=40)
 	private String rue;
 	
+    private Integer numrue;
+	
+	private Integer codepostale;
+	private String ville;
+	
+	public String getVille() {
+		return ville;
+	}
+
+	public void setVille(String ville) {
+		this.ville = ville;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -52,8 +65,6 @@ public class Adresse {
 		this.codepostale = codepostale;
 	}
 
-	private Integer numrue;
 	
-	private Integer codepostale;
 
 }
