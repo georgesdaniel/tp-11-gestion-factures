@@ -27,59 +27,80 @@ public class Router implements SparkApplication {
 
 		final Logger logger = LoggerFactory.getLogger(Router.class);
 
-		
 		get("/exemple1", (request, response) -> {
 
 			logger.debug("start");
 
 			Map<String, Object> attributes = new HashMap<>();
-            						
+
 			EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("formation");
 			EntityManager entityManager = entityManagerFactory.createEntityManager();
-			
-			
-			//Insertion d'une adresse
+
+			// Insertion d'une adresse
 			Adresse adresse1 = new Adresse();
 			adresse1.setNumrue(1);
 			adresse1.setRue("rue des prés bas");
 			adresse1.setCodepostale(63000);
 			adresse1.setVille("clermont ferrand");
-			
+
 			TypedQuery<Adresse> queryadresse = entityManager.createQuery("from Adresse", Adresse.class);
 			attributes.put("objets", queryadresse.getResultList());
-			
+
 			entityManager.getTransaction().begin();
 			entityManager.persist(adresse1);
 			entityManager.getTransaction().commit();
+
+			
+			//Insertion d'une description
+			Description descript1 = new Description();
+			descript1.setNomdescription("Made in France");
+			TypedQuery<Description> querydescription = entityManager.createQuery("from Description", Description.class);
+			attributes.put("objets", querydescription.getResultList());
+
+			entityManager.getTransaction().begin();
+			entityManager.persist(descript1);
+			entityManager.getTransaction().commit();
 			
 			
+			//Insertion d'un Article
+
+			Articles article1 = new Articles();
+			article1.setReference("ref1");
+			article1.setDescription(descript1);
+			article1.setPrixarticle(50.00);
+			
+			TypedQuery<Articles> queryarticle = entityManager.createQuery("from Articles", Articles.class);
+			attributes.put("objets", queryarticle.getResultList());
+
+			entityManager.getTransaction().begin();
+			entityManager.persist(article1);
+			entityManager.getTransaction().commit();
+			
+
 			// Insertion d'un Client avec une adresse
-			
-			Clients client1 = new Clients ();
-			client1.setNom("Garfield2");	
+
+			Clients client1 = new Clients();
+			client1.setNom("Garfield2");
 			client1.setPrenom("Cassandre2");
-			
+
 			// Récuperation de l'adresse pour l'incorporer dans le Client
 			Set<Adresse> set1 = new HashSet<>();
 			set1.add(adresse1);
-			
+
 			client1.setAdresse(set1);
-					
-									
+
 			TypedQuery<Clients> query = entityManager.createQuery("from Clients", Clients.class);
 			attributes.put("objets", query.getResultList());
 
 			entityManager.getTransaction().begin();
 			entityManager.persist(client1);
 			entityManager.getTransaction().commit();
-					
+
 			entityManager.close();
-			
-		
+
 			return new ModelAndView(attributes, "home.ftl");
-			
+
 		}, getFreeMarkerEngine());
-				
 
 	}
 
@@ -93,4 +114,3 @@ public class Router implements SparkApplication {
 	}
 
 }
-	
